@@ -1,5 +1,9 @@
 # source: https://us1.prisma.sh/public-shortcrusher-568/people-search-app/dev
-# timestamp: Wed May 23 2018 18:06:54 GMT-0600 (MDT)
+# timestamp: Thu May 24 2018 19:16:12 GMT-0600 (MDT)
+
+type AggregatePerson {
+  count: Int!
+}
 
 type AggregatePost {
   count: Int!
@@ -18,11 +22,17 @@ scalar Long
 
 type Mutation {
   createPost(data: PostCreateInput!): Post!
+  createPerson(data: PersonCreateInput!): Person!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
+  updatePerson(data: PersonUpdateInput!, where: PersonWhereUniqueInput!): Person
   deletePost(where: PostWhereUniqueInput!): Post
+  deletePerson(where: PersonWhereUniqueInput!): Person
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
+  upsertPerson(where: PersonWhereUniqueInput!, create: PersonCreateInput!, update: PersonUpdateInput!): Person!
   updateManyPosts(data: PostUpdateInput!, where: PostWhereInput): BatchPayload!
+  updateManyPersons(data: PersonUpdateInput!, where: PersonWhereInput): BatchPayload!
   deleteManyPosts(where: PostWhereInput): BatchPayload!
+  deleteManyPersons(where: PersonWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -50,6 +60,355 @@ type PageInfo {
 
   """When paginating forwards, the cursor to continue."""
   endCursor: String
+}
+
+type Person implements Node {
+  id: ID!
+  name: String!
+  address: String!
+  age: Int!
+  interests: String!
+  picture: String!
+}
+
+"""A connection to a list of items."""
+type PersonConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PersonEdge]!
+  aggregate: AggregatePerson!
+}
+
+input PersonCreateInput {
+  name: String!
+  address: String!
+  age: Int!
+  interests: String!
+  picture: String!
+}
+
+"""An edge in a connection."""
+type PersonEdge {
+  """The item at the end of the edge."""
+  node: Person!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PersonOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  address_ASC
+  address_DESC
+  age_ASC
+  age_DESC
+  interests_ASC
+  interests_DESC
+  picture_ASC
+  picture_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PersonPreviousValues {
+  id: ID!
+  name: String!
+  address: String!
+  age: Int!
+  interests: String!
+  picture: String!
+}
+
+type PersonSubscriptionPayload {
+  mutation: MutationType!
+  node: Person
+  updatedFields: [String!]
+  previousValues: PersonPreviousValues
+}
+
+input PersonSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PersonSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PersonSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PersonSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PersonWhereInput
+}
+
+input PersonUpdateInput {
+  name: String
+  address: String
+  age: Int
+  interests: String
+  picture: String
+}
+
+input PersonWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PersonWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [PersonWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [PersonWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  address: String
+
+  """All values that are not equal to given value."""
+  address_not: String
+
+  """All values that are contained in given list."""
+  address_in: [String!]
+
+  """All values that are not contained in given list."""
+  address_not_in: [String!]
+
+  """All values less than the given value."""
+  address_lt: String
+
+  """All values less than or equal the given value."""
+  address_lte: String
+
+  """All values greater than the given value."""
+  address_gt: String
+
+  """All values greater than or equal the given value."""
+  address_gte: String
+
+  """All values containing the given string."""
+  address_contains: String
+
+  """All values not containing the given string."""
+  address_not_contains: String
+
+  """All values starting with the given string."""
+  address_starts_with: String
+
+  """All values not starting with the given string."""
+  address_not_starts_with: String
+
+  """All values ending with the given string."""
+  address_ends_with: String
+
+  """All values not ending with the given string."""
+  address_not_ends_with: String
+  age: Int
+
+  """All values that are not equal to given value."""
+  age_not: Int
+
+  """All values that are contained in given list."""
+  age_in: [Int!]
+
+  """All values that are not contained in given list."""
+  age_not_in: [Int!]
+
+  """All values less than the given value."""
+  age_lt: Int
+
+  """All values less than or equal the given value."""
+  age_lte: Int
+
+  """All values greater than the given value."""
+  age_gt: Int
+
+  """All values greater than or equal the given value."""
+  age_gte: Int
+  interests: String
+
+  """All values that are not equal to given value."""
+  interests_not: String
+
+  """All values that are contained in given list."""
+  interests_in: [String!]
+
+  """All values that are not contained in given list."""
+  interests_not_in: [String!]
+
+  """All values less than the given value."""
+  interests_lt: String
+
+  """All values less than or equal the given value."""
+  interests_lte: String
+
+  """All values greater than the given value."""
+  interests_gt: String
+
+  """All values greater than or equal the given value."""
+  interests_gte: String
+
+  """All values containing the given string."""
+  interests_contains: String
+
+  """All values not containing the given string."""
+  interests_not_contains: String
+
+  """All values starting with the given string."""
+  interests_starts_with: String
+
+  """All values not starting with the given string."""
+  interests_not_starts_with: String
+
+  """All values ending with the given string."""
+  interests_ends_with: String
+
+  """All values not ending with the given string."""
+  interests_not_ends_with: String
+  picture: String
+
+  """All values that are not equal to given value."""
+  picture_not: String
+
+  """All values that are contained in given list."""
+  picture_in: [String!]
+
+  """All values that are not contained in given list."""
+  picture_not_in: [String!]
+
+  """All values less than the given value."""
+  picture_lt: String
+
+  """All values less than or equal the given value."""
+  picture_lte: String
+
+  """All values greater than the given value."""
+  picture_gt: String
+
+  """All values greater than or equal the given value."""
+  picture_gte: String
+
+  """All values containing the given string."""
+  picture_contains: String
+
+  """All values not containing the given string."""
+  picture_not_contains: String
+
+  """All values starting with the given string."""
+  picture_starts_with: String
+
+  """All values not starting with the given string."""
+  picture_not_starts_with: String
+
+  """All values ending with the given string."""
+  picture_ends_with: String
+
+  """All values not ending with the given string."""
+  picture_not_ends_with: String
+}
+
+input PersonWhereUniqueInput {
+  id: ID
+  name: String
 }
 
 type Post implements Node {
@@ -292,8 +651,11 @@ input PostWhereUniqueInput {
 
 type Query {
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
+  persons(where: PersonWhereInput, orderBy: PersonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Person]!
   post(where: PostWhereUniqueInput!): Post
+  person(where: PersonWhereUniqueInput!): Person
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
+  personsConnection(where: PersonWhereInput, orderBy: PersonOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PersonConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -304,4 +666,5 @@ type Query {
 
 type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
+  person(where: PersonSubscriptionWhereInput): PersonSubscriptionPayload
 }

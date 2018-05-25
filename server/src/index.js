@@ -3,15 +3,6 @@ const { Prisma } = require('prisma-binding')
 
 const resolvers = {
   Query: {
-    user(parent, { id }, ctx, info) {
-      return ctx.db.query.user(
-        { where: { id } },
-        info
-      )
-    },
-    allUsers(parent, {}, ctx, info) {
-      return ctx.db.query.users({}, info)
-    },
     feed(parent, args, ctx, info) {
       return ctx.db.query.posts({ where: { isPublished: true } }, info)
     },
@@ -21,26 +12,11 @@ const resolvers = {
     post(parent, { id }, ctx, info) {
       return ctx.db.query.post({ where: { id } }, info)
     },
+    person(parent, ar, ctx, info) {
+      return ctx.db.query.persons({}, info)
+    }
   },
   Mutation: {
-    createUser(parent, { id, name, address, age, interests, picture }, ctx, info) {
-      return ctx.db.mutation.createUser(
-        {
-          data: { name, address, age, interests, picture},
-          where: { id }
-        },
-        info,
-      )
-    },
-    updateUser(parent, { id, name, address, age, interests, picture }, ctx, info) {
-      return ctx.db.mutation.updateUser(
-        {
-          data: { name, email, pw },
-          where: { id }
-        },
-        info,
-      )
-    },
     createDraft(parent, { title, text }, ctx, info) {
       return ctx.db.mutation.createPost(
         {
@@ -50,6 +26,12 @@ const resolvers = {
           },
         },
         info,
+      )
+    },
+    createPerson(parent, { name, address, age, interests, picture }, ctx, info) {
+      return ctx.db.mutation.createPerson(
+        { data: { name, address, age, interests, picture} },
+          info,
       )
     },
     deletePost(parent, { id }, ctx, info) {

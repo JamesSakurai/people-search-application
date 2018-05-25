@@ -5,12 +5,11 @@ type Post {
   text: String!
 }
 
-type User {
+type Person {
   id: ID! @unique
-  name: String!
+  name: String! @unique
   address: String!
   age: Int!
   interests: String!
   picture: String!
-
 }

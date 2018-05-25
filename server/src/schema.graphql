@@ -5,8 +5,8 @@ type Query {
   drafts: [Post!]!
   post(id: ID!): Post
 
-  user(id: ID!): User
-  allUsers: [User]
+  person(id: ID!): Person
+  persons: [Person!]!
 }
 
 type Mutation {
@@ -14,6 +14,5 @@ type Mutation {
   deletePost(id: ID!): Post
   publish(id: ID!): Post
 
-  createUser(name: String!, address: String!, age: Int!, interests: String!, picture: String!): User
-  updateUser(id: ID!, name: String!, address: String!, age: Int!, interests: String!, picture: String!): User
+  createPerson(name: String!, address: String!, age: Int!, interests: String!, picture: String!): Person
 }
